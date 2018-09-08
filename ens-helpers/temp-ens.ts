@@ -1,5 +1,62 @@
 /**
 Imports wont work, needs to be tailored to the project
+
+
+To calculate signatures, do the following:
+
+  const signature = "......" 
+  signature = signature.substr(2) // remove 0x
+  const r = `0x${signature.slice(0, 64)}`
+  const s = `0x${signature.slice(64, 128)}`
+  const v = `0x${signature.slice(128, 130)}`
+  const vDecimal = web3.utils.toDecimal(v)
+
+
+
+
+---------------------------------
+for constructing transactions, do the following:
+
+// code
+  const txCount = await web3.eth.getTransactionCount(
+    ZINC_ETH_ADDRESS
+  )
+
+  const txData = {
+    nonce: web3.utils.toHex(txCount),
+    gasLimit: web3.utils.toHex(1600000),
+    gasPrice: web3.utils.toHex(getGasPrice()),
+    from: ZINC_ETH_ADDRESS,
+    to: ZINC_ACCESSOR_ADDRESS,
+    data
+  }
+  const privateKey = new Buffer(ZINC_ETH_KEY, "hex")
+  const transaction = new tx(txData)
+  transaction.sign(privateKey)
+  const serializedTx = transaction.serialize().toString("hex")
+  const txReceipt = await web3.eth.sendSignedTransaction(`0x${serializedTx}`)
+  if (txReceipt.status && txReceipt.transactionHash && txReceipt.logs) {
+    for (const log of txReceipt.logs) {
+      if (log.topics[0] === eventSha) {
+        logger.info(`Contract deployed: ${JSON.stringify(txReceipt)}`)
+        return `0x${log.topics[2].slice(-40)}`
+      }
+    }
+    const err = `Failed to find contract address from receipt: ${JSON.stringify(
+      txReceipt
+    )}`
+    logger.errorSOS(err)
+    throw new Error(err)
+  } else {
+    logger.errorSOS(
+      `Failed to deploy contract. Receipt: ${JSON.stringify(txReceipt)}`
+    )
+    throw new Error(txReceipt)
+  }
+--------------------------------------
+
+
+
 **/
 
 import {
