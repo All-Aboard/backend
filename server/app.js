@@ -5,6 +5,8 @@ const path = require('path');
 const glob = require('glob');
 const helmet = require('helmet');
 const cors = require('cors');
+const HDWalletProvider = require('truffle-hdwallet-provider');
+const privateJson = require('../.private.json');
 
 const app = express();
 
@@ -14,14 +16,21 @@ const web3 = new Web3();
 
 const BASE_ROUTE = '/v1';
 
-const HTTP_PROVIDER = 'http://0.0.0.0:8545';
+
+// const HTTP_PROVIDER = 'http://0.0.0.0:8545';
+// const PROVIDER = new web3.providers.HttpProvider(HTTP_PROVIDER);
+const PROVIDER = new HDWalletProvider(privateJson.mnemonic, privateJson.endpoint, 0);
 // namehash for alliance.test
 const DOMAIN_NAMEHASH = '0x09125397bb87f08c0fb3ae6e467c0da2e02b464c0b0aed09ef6578fd5d7119dd'
+const MAIN_ADDR = '0xd6aa6b77bfd6b08cf4528038bd5cedccb86d00af';
 
 const accounts = [];
 const contracts = {};
+const addresses = {
+    AllianceRegistry: '0xd6aa6b77bfd6b08cf4528038bd5cedccb86d00af'
+};
 
-web3.setProvider(new web3.providers.HttpProvider(HTTP_PROVIDER));
+web3.setProvider(PROVIDER);
 
 app.use(logger('dev'));
 app.use(helmet());
@@ -39,10 +48,18 @@ web3.eth.getAccounts().then((accList) => {
 
 app.use((req, res, next) => {
     req.injections = {
-        web3, accounts, contracts, DOMAIN_NAMEHASH
+        web3, accounts, contracts, addresses,
+        DOMAIN_NAMEHASH, MAIN_ADDR
     };
 
     next();
+});
+
+[].concat(
+    glob.sync('../build/contracts/**/*.json', {cwd: path.join(__dirname)})
+).forEach((filename) => {
+    const contract = require(path.join(filename));
+    contracts[contract.contractName] = contract;
 });
 
 [].concat(

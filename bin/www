@@ -3,6 +3,7 @@
 /**
  * Module dependencies.
  */
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 const app = require('../server/app');
 const debug = require('debug')('backend:server');

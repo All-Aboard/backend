@@ -1,6 +1,6 @@
 {
-    "name": "rinkeby",
-    "endpoint": "https://rinkeby.infura.io/v3/3888980d51e744d690c6d65dfb32668a",
+    "name": "ropsten",
+    "endpoint": "https://ropsten.infura.io/v3/3888980d51e744d690c6d65dfb32668a",
     "network_id": 4,
     "apikey": "3888980d51e744d690c6d65dfb32668a",
     "apisecret": "57c3c842ab4f4748a1dc506e86bd448b",
