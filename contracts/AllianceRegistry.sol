@@ -17,15 +17,16 @@ contract AllianceRegistry {
         _;
     }
 
-    constructor() public {
+    constructor() public payable {
         allianceMembers[msg.sender] = true;
 
-        if (msg.value > 0) {
+       // check isnt needed - msg.value can be 0 and its fine to add 0
+       // if (msg.value > 0) {
             runningBalance += msg.value;
-        }
+       // }
     }
 
-    function createIdentity(address _user) public payable membersOnly() {
+    function createIdentity(address _user) public payable membersOnly {
         uint256 amountToFund = 0;
 
         if (msg.value > 0) {
@@ -39,19 +40,20 @@ contract AllianceRegistry {
 
         Identity idInstance = new Identity(_user, address(this), amountToFund);
 
-        address(idInstance).send(amountToFund);
+        address(idInstance).transfer(amountToFund);
 
         emit IdentityCreated(_user, address(idInstance), msg.sender);
     }
 
-    function addMember(address _member) public membersOnly() {
+    function addMember(address _member) public membersOnly {
         allianceMembers[_member] = true;
 
         emit MemberAdded(_member, msg.sender);
     }
 
     // Only alliance members can fun this
-    function () payable membersOnly() {
+    function () payable membersOnly {
+        // ?? you may wanna add to running balance? 
         emit ReceivedFunds(msg.sender, msg.value);
     }
 }
