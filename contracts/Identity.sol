@@ -10,7 +10,15 @@ contract Identity is Ownable {
     using ECRecovery for bytes32;
     using SafeMath for uint256;
 
-    constructor() public { }
+    address userAddress;
+    address registry;
+    uint256 fundedAmount;
+
+    constructor(address _user, address _registry, uint256 _fundedAmount) payable {
+        userAddress = _user;
+        registry = _registry;
+        fundedAmount = _fundedAmount;
+    }
 
     function () public payable {
         emit Received(msg.sender, msg.value);
@@ -53,23 +61,6 @@ contract Identity is Ownable {
     {
         publisherSigned[executionHash] = true;
         return true;
-    }
-
-    // this is used by external smart contracts to verify on-chain that a
-    // particular subscription is "paid" and "active"
-    // there must be a small grace period added to allow the publisher
-    // or desktop miner to execute
-    function isExecutionActive(
-        bytes32 executionHash,
-        uint256 gracePeriodSeconds
-    )
-        external
-        view
-        returns (bool)
-    {
-        return (block.timestamp >=
-                    nextValidTimestamp[executionHash].add(gracePeriodSeconds)
-        );
     }
 
     // given the subscription details, generate a hash and try to kind of follow
@@ -116,71 +107,9 @@ contract Identity is Ownable {
         return executionHash.toEthSignedMessageHash().recover(signature);
     }
 
-    //check if a subscription is signed correctly and the timestamp is ready for
-    // the next execution to happen
-    function isExecutionReady(
-        address from, //the subscriber
-        address to, //the publisher
-        address tokenAddress, //the token address paid to the publisher
-        uint256 tokenAmount, //the token amount paid to the publisher
-        uint256 periodSeconds, //the period in seconds between payments
-        address gasToken, //the address of the token to pay relayer (0 for eth)
-        uint256 gasPrice, //the amount of tokens or eth to pay relayer (0 for free)
-        address gasPayer, //the address that will pay the tokens to the relayer
-        bytes signature //proof the subscriber signed the meta trasaction
-    )
-        public
-        view
-        returns (bool)
-    {
-        bytes32 executionHash = getExecutionHash(
-            from, to, tokenAddress, tokenAmount, periodSeconds, gasToken, gasPrice, gasPayer
-        );
-        address signer = getExecutionSigner(executionHash, signature);
-        uint256 allowance = ERC20(tokenAddress).allowance(from, address(this));
-        return (
-            signer == from &&
-            block.timestamp >= nextValidTimestamp[executionHash] &&
-            allowance >= tokenAmount
-        );
-    }
-
-    // you don't really need this if you are using the approve/transferFrom method
-    // because you control the flow of tokens by approving this contract address,
-    // but to make the contract an extensible example for later user I'll add this
-    function cancelExecution(
-        address from, //the subscriber
-        address to, //the publisher
-        address tokenAddress, //the token address paid to the publisher
-        uint256 tokenAmount, //the token amount paid to the publisher
-        uint256 periodSeconds, //the period in seconds between payments
-        address gasToken, //the address of the token to pay relayer (0 for eth)
-        uint256 gasPrice, //the amount of tokens or eth to pay relayer (0 for free)
-        address gasPayer, //the address that will pay the tokens to the relayer
-        bytes signature //proof the subscriber signed the meta trasaction
-    )
-        public
-        returns (bool success)
-    {
-        bytes32 executionHash = getExecutionHash(
-            from, to, tokenAddress, tokenAmount, periodSeconds, gasToken, gasPrice, gasPayer
-        );
-        address signer = executionHash.toEthSignedMessageHash().recover(signature);
-
-        //the signature must be valid
-        require(signer == from, "Invalid Signature for subscription cancellation");
-
-        //since we can't underflow (SAFEMATH!), we'll just set it to a large number
-        nextValidTimestamp[executionHash]=99999999999; //subscription will become valid again Wednesday, November 16, 5138 9:46:39 AM
-        //at this point the nextValidTimestamp should be a timestamp that will never
-        //be reached during the brief window human existence
-
-        return true;
-    }
-
     // execute the transferFrom to pay the publisher from the subscriber
     // the subscriber has full control by approving this contract an allowance
-    function executeExecution(
+    function execute(
         address from, //the subscriber
         address to, //the publisher
         address tokenAddress, //the token address paid to the publisher
@@ -203,36 +132,6 @@ contract Identity is Ownable {
 
         //the signature must be valid
         require(signer == from, "Invalid Signature");
-        //timestamp must be equal to or past the next period
-        require(
-            block.timestamp >= nextValidTimestamp[executionHash],
-            "Execution is not ready"
-        );
-
-
-
-
-
-        // increment the next valid period time
-        //if (nextValidTimestamp[executionHash] == 0) {
-
-            //I changed this to always use the timestamp
-            // this means desktop miners MUST submit transactions as fast as possible
-            // or subscriptions will start to lag
-            // the upside of doing it this way is the approve/allowance of the erc20
-            // can now pause and restart the subscription whenever they want
-            nextValidTimestamp[executionHash] = block.timestamp.add(periodSeconds);
-
-            //if you would like your subscription to be able to submit multiple months
-            // all at once, switch back to the uncommented method, but if the subscriber
-            // pauses the allowance and then later approves... a bunch of funds can all
-            // move at once as you work through past months of unpaid subscriptions
-
-
-        //} else {
-        //      nextValidTimestamp[executionHash] =
-        //        nextValidTimestamp[executionHash].add(periodSeconds);
-        //}
 
         // now, let make the transfer from the subscriber to the publisher
         bool result = ERC20(tokenAddress).transferFrom(from,to,tokenAmount);
