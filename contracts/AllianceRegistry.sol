@@ -38,9 +38,10 @@ contract AllianceRegistry {
             amountToFund = MIN_VALUE;
         }
 
+// changed here
         Identity idInstance = (new Identity).value(amountToFund)(_user, address(this));
 
-        address(idInstance).transfer(amountToFund);
+        // address(idInstance).transfer(amountToFund);
 
         emit IdentityCreated(_user, address(idInstance), msg.sender);
     }

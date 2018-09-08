@@ -17,6 +17,7 @@ contract Identity is Ownable {
     constructor(address _user, address _registry) payable {
         userAddress = _user;
         registry = _registry;
+        // changed here
         fundedAmount = msg.value;
     }
 
