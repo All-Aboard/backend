@@ -19,7 +19,7 @@ router.post('/', async (req, res, next) => {
 
     const identity = await (IdentityContract.deploy({
         data: contracts.Identity.bytecode,
-        arguments: [account, addresses.AllianceRegistry]
+        arguments: [account, addresses.AllianceRegistry, 0]
     }).send({
         from: MAIN_ADDR,
         gas: 2000000,
