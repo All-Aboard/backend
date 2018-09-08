@@ -14,10 +14,11 @@ contract Identity is Ownable {
     address registry;
     uint256 fundedAmount;
 
-    constructor(address _user, address _registry, uint256 _fundedAmount) payable {
+    constructor(address _user, address _registry) payable {
         userAddress = _user;
         registry = _registry;
-        fundedAmount = _fundedAmount;
+        // changed here
+        fundedAmount = msg.value;
     }
 
     function () public payable {
