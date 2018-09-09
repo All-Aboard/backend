@@ -21,8 +21,11 @@ const BASE_ROUTE = '/v1';
 // const PROVIDER = new web3.providers.HttpProvider(HTTP_PROVIDER);
 const PROVIDER = new HDWalletProvider(privateJson.mnemonic, privateJson.endpoint, 0);
 // namehash for alliance.test
-const DOMAIN_NAMEHASH = '0x09125397bb87f08c0fb3ae6e467c0da2e02b464c0b0aed09ef6578fd5d7119dd'
+const DOMAIN_NAMEHASH = '0x09125397bb87f08c0fb3ae6e467c0da2e02b464c0b0aed09ef6578fd5d7119dd';
 const MAIN_ADDR = '0xd6aa6b77bfd6b08cf4528038bd5cedccb86d00af';
+const ENS_REGISTRY_ROPSTEN = '0x112234455C3a32FD11230C42E7Bccd4A84e02010';
+const ENS_RESOLVER_ROPSTEN = '0x4c641fb9bad9b60ef180c31f56051ce826d21a9a';
+const ALLIANCE_DOMAIN = 'fancytestdomain.test';
 
 const accounts = [];
 const contracts = {};
@@ -49,7 +52,8 @@ web3.eth.getAccounts().then((accList) => {
 app.use((req, res, next) => {
     req.injections = {
         web3, accounts, contracts, addresses,
-        DOMAIN_NAMEHASH, MAIN_ADDR
+        DOMAIN_NAMEHASH, MAIN_ADDR,
+        ENS_REGISTRY_ROPSTEN, ENS_RESOLVER_ROPSTEN
     };
 
     next();

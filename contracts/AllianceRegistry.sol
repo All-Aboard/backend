@@ -17,7 +17,7 @@ contract AllianceRegistry {
         _;
     }
 
-    constructor() public payable {
+    constructor () public payable {
         allianceMembers[msg.sender] = true;
 
        // check isnt needed - msg.value can be 0 and its fine to add 0
