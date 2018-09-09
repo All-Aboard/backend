@@ -4,7 +4,7 @@ Imports wont work, needs to be tailored to the project
 
 To calculate signatures, do the following:
 
-  const signature = "......" 
+  const signature = "......"
   signature = signature.substr(2) // remove 0x
   const r = `0x${signature.slice(0, 64)}`
   const s = `0x${signature.slice(64, 128)}`

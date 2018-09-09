@@ -10,9 +10,9 @@ contract Identity is Ownable {
     using ECRecovery for bytes32;
     using SafeMath for uint256;
 
-    address userAddress;
-    address registry;
-    uint256 fundedAmount;
+    address public userAddress;
+    address public registry;
+    uint256 public fundedAmount;
 
     constructor(address _user, address _registry) payable {
         userAddress = _user;
