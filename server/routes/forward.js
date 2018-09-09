@@ -42,23 +42,26 @@ module.exports = router;
 function getNonce(address, callback) {
     web3.eth.getTransactionCount(address, (error, result) => {
         var txnsCount = result;
-        web3.currentProvider.sendAsync({
-            method: "txpool_content",
-            params: [],
-            jsonrpc: "2.0",
-            id: new Date().getTime()
-        }, (error, result) => {
-            if (result.result.pending) {
-                if (result.result.pending[address]) {
-                    txnsCount = txnsCount +
-                        Object.keys(result.result.pending[address]).length;
-                    callback(null, txnsCount);
-                } else {
-                    callback(null, txnsCount);
-                }
-            } else {
-                callback(null, txnsCount);
-            }
-        })
+
+        callback(null, txnsCount);
+
+        // web3.currentProvider.sendAsync({
+        //     method: "txpool_content",
+        //     params: [],
+        //     jsonrpc: "2.0",
+        //     id: new Date().getTime()
+        // }, (error, result) => {
+        //     if (result.result.pending) {
+        //         if (result.result.pending[address]) {
+        //             txnsCount = txnsCount +
+        //                 Object.keys(result.result.pending[address]).length;
+        //             callback(null, txnsCount);
+        //         } else {
+        //             callback(null, txnsCount);
+        //         }
+        //     } else {
+        //         callback(null, txnsCount);
+        //     }
+        // })
     })
 }
