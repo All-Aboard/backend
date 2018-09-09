@@ -41,3 +41,20 @@ A possibility for the future is that this registry, and the Alliance, can be reg
 This is an off-chain Web service that is based on the MetaTransactions pattern by [Austin Griffith](http://github.com/austintgriffith)
 which basically picks up requests of transactions from browser based private keys ("invisible and etherless accounts") and it executes them. When it executes the transactions, it will withdraw the gas fees and any other ETH balance required by the transactions themselves from the Identity contract of the user.
 
+
+# Playground
+
+You can play with it on [allabord.xyz](http://allaboard.xyz)
+
+The frontend repo is [located here](https://github.com/All-Aboard/react-app)
+
+The backend repo is [located here](https://github.com/All-Aboard/backend) And it is currently hosted in AWS (34.202.218.138)
+
+The smart contracts are deployed on Ropsten,
+
+- QueenChain - https://ropsten.etherscan.io/address/0xb8d5277874067e02ed2f83888b43d762b01d9f10
+- DAppetizer - https://ropsten.etherscan.io/address/0xe6a0a61aa36b87ff96891fcb888d8ca6b70ac014
+
+The Identity SC is deployed prgrammatically, example;
+
+- https://ropsten.etherscan.io/address/0x8fc2c437afd3d538e520fbecd44a01fb981878bf
