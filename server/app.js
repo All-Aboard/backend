@@ -50,7 +50,7 @@ app.use((req, res, next) => {
     req.injections = {
         web3, accounts, contracts, addresses,
         DOMAIN_NAMEHASH, MAIN_ADDR,
-        privateKey: privateJson.privateKey
+        privateKey: Buffer.from(privateJson.privateKey.replace(/^0x/, ''), 'hex')
     };
 
     next();

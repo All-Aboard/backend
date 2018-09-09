@@ -6,7 +6,7 @@ const EthereumTx = require('ethereumjs-tx');
 const lightwallet = require('eth-lightwallet');
 const txutils = lightwallet.txutils;
 
-const Nonce = 0
+let Nonce = 0
 
 router.post('/', async (req, res, next) => {
     const {web3, contracts, addresses, MAIN_ADDR, privateKey} = req.injections;
@@ -25,9 +25,12 @@ router.post('/', async (req, res, next) => {
     const tx = new EthereumTx(txParams);
     tx.sign(privateKey);
 
-    console.log(tx.serialize());
+    console.log(tx.serialize().toString('hex'));
 
-    res.send({});
+    web3.eth.sendSignedTransaction('0x' + tx.serialize().toString('hex')).on('receipt', console.log).catch( (e) => {
+        console.log(e)
+        res.send({});
+    });
 });
 
 module.exports = router;
