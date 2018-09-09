@@ -2,6 +2,7 @@
 - Team members: @[lyricalpolymath](https://github.com/lyricalpolymath), @[Kyrrui](https://github.com/Kyrrui), @[epappas](https://github.com/epappas), @[ali2251](https://github.com/ali2251), @[amy-jung](https://github.com/amy-jung)
 (standing on the shoulders of giants): @[austintgriffith](https://github.com/austintgriffith) and more
 - Network: Ropsten
+- Video [Presentation](https://www.youtube.com/watch?v=lu95Mjj2w6k)
 
 All Aboard is an UX flow & architecture to on-board no coiners, giving them a wallet & ETH to start operating on the blockchain. 
 These new users won't need to manage private keys, understand gas, or install browser plugins (like Metamask).
