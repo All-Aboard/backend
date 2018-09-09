@@ -58,3 +58,22 @@ The smart contracts are deployed on Ropsten,
 The Identity SC is deployed prgrammatically, example;
 
 - https://ropsten.etherscan.io/address/0x8fc2c437afd3d538e520fbecd44a01fb981878bf
+
+
+### For Developers
+
+#### Backend
+
+- git clone the repo
+- rename the `.private.sample.json` to `.private.json` and edit the fields accordingly with the entrypoints of your own node (local or remote, eg infura)
+- run `yarn` to install
+- `yarn start` to start the service
+
+#### Frontend
+
+- git clone the repo
+- make sure `react-scripts` is globally installed (`npm install react-scripts -g`)
+- `npm install` to install the local dependencies
+- `npm start` to start the front-end to run.
+- By default the UI app connects to the remote AWS server.
+
