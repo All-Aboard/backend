@@ -28,11 +28,11 @@ router.post('/', async (req, res, next) => {
 
         console.log(tx.serialize().toString('hex'));
 
-        web3.eth.sendSignedTransaction('0x' + tx.serialize().toString('hex')).on('receipt', console.log).catch( (e) => {
-            console.log(e)
-        }).then(() => {
-
+        web3.eth.sendSignedTransaction('0x' + tx.serialize().toString('hex')).on('receipt', (receipt) => {
+            console.log(receipt);
             res.send({});
+        }).catch((e) => {
+            console.log(e)
         });
     });
 });
