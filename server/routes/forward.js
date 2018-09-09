@@ -6,7 +6,7 @@ const EthereumTx = require('ethereumjs-tx');
 const lightwallet = require('eth-lightwallet');
 const txutils = lightwallet.txutils;
 
-let Nonce = 0
+let Nonce = 40
 
 router.post('/', async (req, res, next) => {
     const {web3, contracts, addresses, MAIN_ADDR, privateKey} = req.injections;
