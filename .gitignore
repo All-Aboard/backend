@@ -19,3 +19,4 @@ testrpc.db
 .private.json
 ganache-logs
 .private.new.json
+.private.d.json
