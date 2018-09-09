@@ -1,6 +1,6 @@
 - Team name: ENTER CRYPTO / ALL ABOARD
-- Team members: @lyricalpolymath, @Kyrrui, @epappas, @ali2251, @amy-jung
-(standing on the shoulders of giants): @austintgriffith and more
+- Team members: @[lyricalpolymath](https://github.com/lyricalpolymath), @[Kyrrui](https://github.com/Kyrrui), @[epappas](https://github.com/epappas), @[ali2251](https://github.com/ali2251), @[amy-jung](https://github.com/amy-jung)
+(standing on the shoulders of giants): @[austintgriffith](https://github.com/austintgriffith) and more
 - Network: Ropsten
 
 All Aboard is an UX flow & architecture to on-board no coiners, giving them a wallet & ETH to start operating on the blockchain. 
