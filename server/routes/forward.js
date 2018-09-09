@@ -6,14 +6,14 @@ const EthereumTx = require('ethereumjs-tx');
 const lightwallet = require('eth-lightwallet');
 const txutils = lightwallet.txutils;
 
-let Nonce = 40
+let Nonce = 20
 
 router.post('/', async (req, res, next) => {
     const {web3, contracts, addresses, MAIN_ADDR, privateKey} = req.injections;
     const {dataSign, toAddr, value} = req.body;
 
     const txParams = {
-        nonce: (Nonce+=10),
+        nonce: (Nonce++),
         gasLimit: web3.utils.toHex(5000000),
         gasPrice: web3.utils.toHex(100000000000),
         to: toAddr,
