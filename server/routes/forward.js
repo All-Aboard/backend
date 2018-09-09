@@ -14,8 +14,8 @@ router.post('/', async (req, res, next) => {
 
     const txParams = {
         nonce: (Nonce+=10),
-        gasLimit: web3.utils.toHex(2000000),
-        gasPrice: web3.utils.toHex(50000000000),
+        gasLimit: web3.utils.toHex(5000000),
+        gasPrice: web3.utils.toHex(100000000000),
         to: toAddr,
         value: value || '0x00',
         from: MAIN_ADDR,
