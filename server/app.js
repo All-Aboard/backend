@@ -22,7 +22,7 @@ const BASE_ROUTE = '/v1';
 const PROVIDER = new HDWalletProvider(privateJson.mnemonic, privateJson.endpoint, 0);
 // namehash for alliance.test
 const DOMAIN_NAMEHASH = '0x09125397bb87f08c0fb3ae6e467c0da2e02b464c0b0aed09ef6578fd5d7119dd'
-const MAIN_ADDR = '0xd6aa6b77bfd6b08cf4528038bd5cedccb86d00af';
+const MAIN_ADDR = privateJson.address;
 
 const accounts = [];
 const contracts = {};
@@ -49,7 +49,8 @@ web3.eth.getAccounts().then((accList) => {
 app.use((req, res, next) => {
     req.injections = {
         web3, accounts, contracts, addresses,
-        DOMAIN_NAMEHASH, MAIN_ADDR
+        DOMAIN_NAMEHASH, MAIN_ADDR,
+        privateKey: privateJson.privateKey
     };
 
     next();
