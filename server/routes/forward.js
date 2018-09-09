@@ -10,7 +10,7 @@ router.post('/', async (req, res, next) => {
     const {web3, contracts, addresses, MAIN_ADDR, privateKey} = req.injections;
     const {dataSign, toAddr, value} = req.body;
 
-    getNonce(MAIN_ADDR, (err, txnsCount) => {
+    getNonce(web3, MAIN_ADDR, (err, txnsCount) => {
         console.log('txnsCount', txnsCount);
 
         const txParams = {
@@ -40,7 +40,7 @@ router.post('/', async (req, res, next) => {
 module.exports = router;
 
 
-function getNonce(address, callback) {
+function getNonce(web3, address, callback) {
     web3.eth.getTransactionCount(address, (error, result) => {
         var txnsCount = result;
 
