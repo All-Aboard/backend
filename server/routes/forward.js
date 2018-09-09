@@ -10,7 +10,7 @@ router.post('/', async (req, res, next) => {
     const {web3, contracts, addresses, MAIN_ADDR, privateKey} = req.injections;
     const {dataSign, toAddr, value} = req.body;
 
-    getNonce(MAIN_ADDR, async (err, txnsCount) => {
+    getNonce(MAIN_ADDR, (err, txnsCount) => {
         console.log('txnsCount', txnsCount);
 
         const txParams = {
@@ -28,11 +28,12 @@ router.post('/', async (req, res, next) => {
 
         console.log(tx.serialize().toString('hex'));
 
-        await web3.eth.sendSignedTransaction('0x' + tx.serialize().toString('hex')).on('receipt', console.log).catch( (e) => {
+        web3.eth.sendSignedTransaction('0x' + tx.serialize().toString('hex')).on('receipt', console.log).catch( (e) => {
             console.log(e)
-        });
+        }).then(() => {
 
-        res.send({});
+            res.send({});
+        });
     });
 });
 
